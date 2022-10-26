@@ -9,10 +9,10 @@ export const ButtonStyle: ComponentStyleConfig = {
   // styles for different visual variants ("outline", "solid")
   variants: {
     primary: {
-      bg: "primary",
+      bg: "teal.500",
       color: "white",
       _hover: {
-        bg: "primary.500",
+        bg: "teal.300",
       },
     },
     secondary: (props) => ({
