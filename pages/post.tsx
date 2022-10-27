@@ -275,3 +275,4 @@ const Post: CustomNextPage = () => {
 export default Post;
 
 Post.withLayout = withLayout;
+Post.auth = true;
