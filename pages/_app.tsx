@@ -10,6 +10,7 @@ import { useEffect } from "react";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   withLayout?: (page: ReactElement) => ReactNode;
+  auth?: boolean;
 };
 
 type AppPropsWithLayout = AppProps & {

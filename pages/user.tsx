@@ -55,3 +55,4 @@ const User: CustomNextPage = () => {
 export default User;
 
 User.withLayout = withLayout;
+User.auth = true;
