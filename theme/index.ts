@@ -1,16 +1,12 @@
-import { foundations } from "./foundations";
-import { components } from "./components";
-import { type ThemeConfig } from "@chakra-ui/react";
+// import { foundations } from "./foundations";
+// import { components } from "./components";
+import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
 
 const config: ThemeConfig = {
-  initialColorMode: "dark",
+  initialColorMode: "light",
   useSystemColorMode: false,
 };
 
-export const theme = {
-  config,
-  ...foundations,
-  components,
-};
+const theme = extendTheme({ config });
 
 export default theme;
