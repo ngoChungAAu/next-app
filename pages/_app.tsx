@@ -70,7 +70,7 @@ function Auth(Component: CustomNextPage) {
     const acQuery = useMemo(() => {
       if (permissions) {
         const ac = new AccessControl(permissions || []);
-        return ac.can(["admin", "user", "editor"]);
+        return ac.can(Object.keys(permissions));
       }
 
       return null;
