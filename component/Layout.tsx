@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink, { LinkProps } from "next/link";
+import { signOut } from "next-auth/react";
 
 const Links = ["Post", "User"];
 
@@ -45,6 +46,10 @@ const NavLink = ({
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false, callbackUrl: "/login" });
+  };
 
   return (
     <>
@@ -92,6 +97,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <MenuItem>Link 2</MenuItem>
                 <MenuDivider />
                 <MenuItem>Link 3</MenuItem>
+                <MenuDivider />
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </MenuList>
             </Menu>
           </Flex>

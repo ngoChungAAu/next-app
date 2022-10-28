@@ -23,10 +23,10 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const res = await signIn("credentials", {
+      await signIn("credentials", {
         email,
         password,
-        callbackUrl: `${window.location.origin}`,
+        callbackUrl: `/`,
       });
     } catch (error) {
       console.log(error);
