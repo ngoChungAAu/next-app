@@ -1,12 +1,13 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { SessionProvider, signIn, useSession } from "next-auth/react";
+import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import theme from "../theme";
 import { useEffect } from "react";
+import RefreshTokenHandler from "../component/RefreshTokenHandler";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   withLayout?: (page: ReactElement) => ReactNode;
@@ -25,8 +26,10 @@ export default function App({
 }: any) {
   const withLayout = Component.withLayout ?? ((page: any) => page);
 
+  const [interval, setInterval] = useState(0);
+
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} refetchInterval={interval}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}>
           {Component.auth ? (
@@ -36,6 +39,7 @@ export default function App({
           )}
         </ChakraProvider>
       </QueryClientProvider>
+      <RefreshTokenHandler setInterval={setInterval} />
     </SessionProvider>
   );
 }
@@ -45,9 +49,14 @@ function Auth({ children }: any) {
   const isUser = !!session?.user;
 
   useEffect(() => {
+    if (session?.error === "RefreshAccessTokenError") {
+      signOut({ callbackUrl: "/login" });
+    }
+
     if (status === "loading") return;
+
     if (!isUser) signIn();
-  }, [isUser, status]);
+  }, [isUser, status, session]);
 
   if (isUser) {
     return children;
