@@ -18,7 +18,7 @@ import { withLayout } from "../component/Layout";
 import { getUsers } from "../services";
 import { CustomNextPage } from "./_app";
 
-const User: CustomNextPage = () => {
+const User: CustomNextPage = (props) => {
   const { data } = useQuery(["users"], getUsers);
 
   const users = data?.items || [];
@@ -55,4 +55,8 @@ const User: CustomNextPage = () => {
 export default User;
 
 User.withLayout = withLayout;
-User.auth = true;
+User.auth = {
+  schema: (query) => ({
+    canVisit: query.readAny("user"),
+  }),
+};

@@ -65,8 +65,8 @@ const authOptions: NextAuthOptions = {
         const {
           accessToken,
           refreshToken,
-          expAccessToken,
           permissions,
+          expAccessToken,
           ...data
         } = user;
 
@@ -77,6 +77,7 @@ const authOptions: NextAuthOptions = {
             permissions,
             accessToken,
             refreshToken,
+            role: data.user.role,
             expireIn: expAccessToken * 1000,
           },
         };
@@ -106,5 +107,11 @@ const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
 };
+
+declare module "next-auth" {
+  export interface User {
+    [P: string]: any;
+  }
+}
 
 export default NextAuth(authOptions);
