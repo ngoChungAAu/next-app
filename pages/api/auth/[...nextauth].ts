@@ -36,6 +36,7 @@ const authOptions: NextAuthOptions = {
             id: data.user._id,
             accessToken,
             refreshToken,
+            permissions,
           },
         };
       }
