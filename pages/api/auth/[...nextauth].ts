@@ -1,5 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth, { NextAuthOptions } from "next-auth";
+import axios from "axios";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -12,25 +13,39 @@ const authOptions: NextAuthOptions = {
           password: string;
         };
 
-        //call api login here
+        const res = await axios.post(`${process.env.BASE_URL}/auth/login`, {
+          email,
+          password,
+        });
 
-        // Add logic here to look up the user from the credentials supplied
-        const user = {
-          id: "1",
-          name: "J Smith",
-          email: "jsmith@example.com",
-        };
-
-        return user;
+        if (!!res.data) {
+          return res.data;
+        } else {
+          return null;
+        }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }: any) {
+      if (!!user) {
+        const { accessToken, refreshToken, permissions, ...data } = user;
+        return {
+          ...token,
+          user: {
+            id: data.user._id,
+            accessToken,
+            refreshToken,
+          },
+        };
+      }
+
       return token;
     },
 
     async session({ session, token }: any) {
+      session.user = token.user;
+
       return session;
     },
   },
