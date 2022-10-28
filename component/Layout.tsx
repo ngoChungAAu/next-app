@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogout = async () => {
-    await signOut({ redirect: false, callbackUrl: "/login" });
+    await signOut({ callbackUrl: "/login" });
   };
 
   return (

@@ -12,7 +12,6 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
-import { Router } from "next/router";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);

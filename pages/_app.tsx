@@ -1,15 +1,16 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { ReactElement, ReactNode, useLayoutEffect, useMemo } from "react";
+import { ReactElement, ReactNode, useMemo, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { SessionProvider, signIn, useSession } from "next-auth/react";
+import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import theme from "../theme";
 import { useEffect } from "react";
 import { AccessControl } from "accesscontrol";
 import { CHECK_FUNCTION_MAP, Relation, Schema } from "../utils";
 import Redirect from "../component/Redirect";
+import RefreshTokenHandler from "../component/RefreshTokenHandler";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   withLayout?: (page: ReactElement) => ReactNode;
@@ -34,13 +35,16 @@ export default function App({
     ? Auth(OrginalComponent)
     : OrginalComponent;
 
+  const [interval, setInterval] = useState(0);
+
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session} refetchInterval={interval}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider>
           {withLayout(<Component {...pageProps} />)}
         </ChakraProvider>
       </QueryClientProvider>
+      <RefreshTokenHandler setInterval={setInterval} />
     </SessionProvider>
   );
 }
@@ -53,6 +57,15 @@ function Auth(Component: CustomNextPage) {
     const permissions = session?.user?.permissions?.[0];
     // @ts-ignored
     const accessToken = session?.user?.accessToken;
+    useEffect(() => {
+      if (session?.error === "RefreshAccessTokenError") {
+        signOut({ callbackUrl: "/login" });
+      }
+
+      if (status === "loading") return;
+
+      if (status === "unauthenticated") signIn();
+    }, [status, session]);
 
     const acQuery = useMemo(() => {
       if (permissions) {
