@@ -31,6 +31,7 @@ import { CustomNextPage } from "./_app";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addPost, deletePost, getPosts, updatePost } from "../services";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useSession } from "next-auth/react";
 
 export type PostFormData = Pick<Post, "title" | "description">;
 
@@ -43,7 +44,6 @@ const useModalForm = (
     onSuccess: () => {
       queryClient.invalidateQueries(["posts"]);
       onClose();
-      console.log("success");
     },
   });
 
@@ -162,8 +162,9 @@ const DeleteModal = ({
   );
 };
 
-const Post: CustomNextPage = () => {
+const Post: CustomNextPage = (props: any) => {
   const { data } = useQuery(["posts"], getPosts);
+  const { data: session } = useSession();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -212,6 +213,7 @@ const Post: CustomNextPage = () => {
                   <Td>{post.description}</Td>
                   <Td>{post.owner?.name || "Anomyous"}</Td>
                   <Td>
+                    {props.permissionsList.canReadOwn.grant}
                     <HStack spacing={1}>
                       <IconButton
                         aria-label="Edit Post"
@@ -275,4 +277,9 @@ const Post: CustomNextPage = () => {
 export default Post;
 
 Post.withLayout = withLayout;
-Post.auth = true;
+Post.auth = {
+  schema: (query) => ({
+    canReadAny: query.readAny("post"),
+    canReadOwn: query.readOwn("post"),
+  }),
+};

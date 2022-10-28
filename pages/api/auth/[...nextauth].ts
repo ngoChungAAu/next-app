@@ -30,6 +30,7 @@ const authOptions: NextAuthOptions = {
     async jwt({ token, user }: any) {
       if (!!user) {
         const { accessToken, refreshToken, permissions, ...data } = user;
+
         return {
           ...token,
           user: {
@@ -37,6 +38,7 @@ const authOptions: NextAuthOptions = {
             accessToken,
             refreshToken,
             permissions,
+            role: data.user.role,
           },
         };
       }
@@ -54,5 +56,11 @@ const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
 };
+
+declare module "next-auth" {
+  export interface User {
+    [P: string]: any;
+  }
+}
 
 export default NextAuth(authOptions);

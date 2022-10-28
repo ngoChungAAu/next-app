@@ -8,23 +8,33 @@ const client = axios.create({
   },
 });
 
+client.interceptors.request.use(function (config) {
+  const headers = config.headers || {};
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+    config.headers = headers;
+  }
+
+  return config;
+});
+
 export const getPosts = () =>
   client
-    .get<{ totalItems: number; items: Post[] }>("/post/read")
+    .get<{ totalItems: number; items: Post[] }>("/post")
     .then((res) => res.data);
 
-export const addPost = (data: PostFormData) =>
-  client.post("/post/create", data);
+export const addPost = (data: PostFormData) => client.post("/post", data);
 
 export const updatePost = ({
   id,
   ...data
-}: Partial<PostFormData> & { id: string }) =>
-  client.put(`/post/update/${id}`, data);
+}: Partial<PostFormData> & { id: string }) => client.put(`/post/${id}`, data);
 
-export const deletePost = (id: string) => client.delete(`/post/delete/${id}`);
+export const deletePost = (id: string) => client.delete(`/post/${id}`);
 
 export const getUsers = () =>
   client
-    .get<{ totalItems: number; items: User[] }>("/user/read")
+    .get<{ totalItems: number; items: User[] }>("/user")
     .then((res) => res.data);
