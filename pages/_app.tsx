@@ -11,6 +11,7 @@ import { AccessControl } from "accesscontrol";
 import { CHECK_FUNCTION_MAP, Relation, Schema } from "../utils";
 import Redirect from "../component/Redirect";
 import RefreshTokenHandler from "../component/RefreshTokenHandler";
+import { appWithTranslation } from "next-i18next";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   withLayout?: (page: ReactElement) => ReactNode;
@@ -26,7 +27,7 @@ type AppPropsWithLayout = AppProps & {
 
 const queryClient = new QueryClient();
 
-export default function App({
+function App({
   Component: OrginalComponent,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
@@ -48,6 +49,8 @@ export default function App({
     </SessionProvider>
   );
 }
+
+export default appWithTranslation(App);
 
 function Auth(Component: CustomNextPage) {
   return function ComponentWithAuth(props: any) {

@@ -32,7 +32,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addPost, deletePost, getPosts, updatePost } from "../services";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
-
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
+import Link from "next/link";
+import { useRouter } from "next/router";
 export type PostFormData = Pick<Post, "title" | "description">;
 
 const useModalForm = (
@@ -178,22 +181,29 @@ const Post: CustomNextPage = (props: any) => {
     onClose: onEditModalClose,
   } = useDisclosure();
   const [selectPostId, setSelectPostId] = useState("");
-
+  const router = useRouter();
   const posts = data?.items || [];
   const selectPost = data?.items.find((post) => post._id === selectPostId);
 
+  const changeTo = router.locale === "en" ? "en" : "vi";
+
+  const { t } = useTranslation(["post"]);
   return (
     <>
       <Head>
         <title>Post</title>
       </Head>
+      <Link href="/post" locale={changeTo}>
+        <button>{t("change-locale", { changeTo })}</button>
+      </Link>
+
       <Container maxW="container.xl">
         <Button
           colorScheme="blue"
           style={{ marginLeft: "auto", marginRight: 0, display: "block" }}
           onClick={onOpen}
         >
-          Add new post
+          {t("post:addButton")}
         </Button>
         <TableContainer>
           <Table variant="simple">
@@ -275,6 +285,15 @@ const Post: CustomNextPage = (props: any) => {
 };
 
 export default Post;
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["post"])),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 Post.withLayout = withLayout;
 Post.auth = {
