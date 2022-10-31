@@ -14,7 +14,7 @@ import RefreshTokenHandler from "../component/RefreshTokenHandler";
 import { appWithTranslation } from "next-i18next";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
-  withLayout?: (page: ReactElement) => ReactNode;
+  getLayout?: (pageProps: AppProps, page: ReactElement) => ReactNode;
   auth?: {
     schema?: Schema;
     relation?: Relation;
@@ -31,7 +31,6 @@ function App({
   Component: OrginalComponent,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
-  const withLayout = OrginalComponent.withLayout ?? ((page: any) => page);
   const Component = OrginalComponent.auth
     ? Auth(OrginalComponent)
     : OrginalComponent;
@@ -42,7 +41,7 @@ function App({
     <SessionProvider session={session} refetchInterval={interval}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider>
-          {withLayout(<Component {...pageProps} />)}
+          <Component {...pageProps} />
         </ChakraProvider>
       </QueryClientProvider>
       <RefreshTokenHandler setInterval={setInterval} />

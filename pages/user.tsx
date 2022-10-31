@@ -14,7 +14,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import React from "react";
-import { withLayout } from "../component/Layout";
+import Layout from "../component/Layout";
 import { getUsers } from "../services";
 import { CustomNextPage } from "./_app";
 
@@ -27,34 +27,35 @@ const User: CustomNextPage = (props) => {
       <Head>
         <title>User</title>
       </Head>
-      <Container maxW="container.xl">
-        <TableContainer>
-          <Table variant="simple">
-            <TableCaption>Imperial to metric conversion factors</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Name</Th>
-                <Th>Email</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {users.map((user) => (
-                <Tr key={user._id}>
-                  <Td>{user.name}</Td>
-                  <Td>{user.email}</Td>
+      <Layout>
+        <Container maxW="container.xl">
+          <TableContainer>
+            <Table variant="simple">
+              <TableCaption>Imperial to metric conversion factors</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Name</Th>
+                  <Th>Email</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+              </Thead>
+              <Tbody>
+                {users.map((user) => (
+                  <Tr key={user._id}>
+                    <Td>{user.name}</Td>
+                    <Td>{user.email}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Layout>
     </>
   );
 };
 
 export default User;
 
-User.withLayout = withLayout;
 User.auth = {
   schema: (query) => ({
     canVisit: query.readAny("user"),
