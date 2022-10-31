@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import {
   Box,
   Flex,
@@ -11,7 +11,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
@@ -44,7 +43,7 @@ const NavLink = ({
   </NextLink>
 );
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogout = async () => {
@@ -99,7 +98,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Flex>
         </Flex>
 
-        {isOpen ? (
+        {isOpen && (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
@@ -109,12 +108,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </Stack>
           </Box>
-        ) : null}
+        )}
       </Box>
-
-      <Box p={4}>{children}</Box>
     </>
   );
 }
-
-export const withLayout = (page: ReactElement) => <Layout>{page}</Layout>;

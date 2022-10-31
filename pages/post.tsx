@@ -26,7 +26,7 @@ import {
 import Head from "next/head";
 import React, { FormEvent, useEffect, useState } from "react";
 import FormItem from "../component/FormItem";
-import { withLayout } from "../component/Layout";
+import Layout from "../component/Layout";
 import { CustomNextPage } from "./_app";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addPost, deletePost, getPosts, updatePost } from "../services";
@@ -196,90 +196,91 @@ const Post: CustomNextPage = (props: any) => {
       <Link href="/post" locale={changeTo}>
         <button>{t("change-locale", { changeTo })}</button>
       </Link>
-
-      <Container maxW="container.xl">
-        <Button
-          colorScheme="blue"
-          style={{ marginLeft: "auto", marginRight: 0, display: "block" }}
-          onClick={onOpen}
-        >
-          {t("post:addButton")}
-        </Button>
-        <TableContainer>
-          <Table variant="simple">
-            <TableCaption>Imperial to metric conversion factors</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Title</Th>
-                <Th>Description</Th>
-                <Th>Post by</Th>
-                <Th>Action</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {posts.map((post) => (
-                <Tr key={post._id}>
-                  <Td>{post.title}</Td>
-                  <Td>{post.description}</Td>
-                  <Td>{post.owner?.name || "Anomyous"}</Td>
-                  <Td>
-                    {props.permissionsList.canReadOwn.grant}
-                    <HStack spacing={1}>
-                      <IconButton
-                        aria-label="Edit Post"
-                        icon={<EditIcon />}
-                        colorScheme="green"
-                        onClick={() => {
-                          onEditModalOpen();
-                          setSelectPostId(post._id);
-                        }}
-                      />
-                      <IconButton
-                        aria-label="Delete Post"
-                        icon={<DeleteIcon />}
-                        colorScheme="red"
-                        onClick={() => {
-                          onDeleteodalOpen();
-                          setSelectPostId(post._id);
-                        }}
-                      />
-                    </HStack>
-                  </Td>
+      <Layout>
+        <Container maxW="container.xl">
+          <Button
+            colorScheme="blue"
+            style={{ marginLeft: "auto", marginRight: 0, display: "block" }}
+            onClick={onOpen}
+          >
+            {t("post:addButton")}
+          </Button>
+          <TableContainer>
+            <Table variant="simple">
+              <TableCaption>Imperial to metric conversion factors</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Title</Th>
+                  <Th>Description</Th>
+                  <Th>Post by</Th>
+                  <Th>Action</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
-      <ModalForm
-        isOpen={isOpen}
-        onClose={onClose}
-        initialValue={{ title: "", description: "" }}
-        modalTitle={"Add post"}
-        onSubmit={addPost}
-      />
-      <ModalForm
-        isOpen={isEditModalOpen}
-        onClose={() => {
-          onEditModalClose();
-          setSelectPostId("");
-        }}
-        initialValue={{
-          title: selectPost?.title || "",
-          description: selectPost?.description || "",
-        }}
-        modalTitle={"Update post"}
-        onSubmit={(data) => updatePost({ ...data, id: selectPostId })}
-      />
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => {
-          onDeleteModalClose();
-          setSelectPostId("");
-        }}
-        onDelete={deletePost}
-        id={selectPostId}
-      />
+              </Thead>
+              <Tbody>
+                {posts.map((post) => (
+                  <Tr key={post._id}>
+                    <Td>{post.title}</Td>
+                    <Td>{post.description}</Td>
+                    <Td>{post.owner?.name || "Anomyous"}</Td>
+                    <Td>
+                      {props.permissionsList.canReadOwn.grant}
+                      <HStack spacing={1}>
+                        <IconButton
+                          aria-label="Edit Post"
+                          icon={<EditIcon />}
+                          colorScheme="green"
+                          onClick={() => {
+                            onEditModalOpen();
+                            setSelectPostId(post._id);
+                          }}
+                        />
+                        <IconButton
+                          aria-label="Delete Post"
+                          icon={<DeleteIcon />}
+                          colorScheme="red"
+                          onClick={() => {
+                            onDeleteodalOpen();
+                            setSelectPostId(post._id);
+                          }}
+                        />
+                      </HStack>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
+        <ModalForm
+          isOpen={isOpen}
+          onClose={onClose}
+          initialValue={{ title: "", description: "" }}
+          modalTitle={"Add post"}
+          onSubmit={addPost}
+        />
+        <ModalForm
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            onEditModalClose();
+            setSelectPostId("");
+          }}
+          initialValue={{
+            title: selectPost?.title || "",
+            description: selectPost?.description || "",
+          }}
+          modalTitle={"Update post"}
+          onSubmit={(data) => updatePost({ ...data, id: selectPostId })}
+        />
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => {
+            onDeleteModalClose();
+            setSelectPostId("");
+          }}
+          onDelete={deletePost}
+          id={selectPostId}
+        />
+      </Layout>
     </>
   );
 };
@@ -295,7 +296,6 @@ export async function getStaticProps({ locale }: { locale: string }) {
   };
 }
 
-Post.withLayout = withLayout;
 Post.auth = {
   schema: (query) => ({
     canReadAny: query.readAny("post"),
