@@ -1,3 +1,9 @@
 {
-  "title": "My Posts"
+  "navbar": {
+    "post": "Post",
+    "user": "User"
+  },
+  "logout": "Logout",
+  "changeLocale": "Language: {{changeTo}}",
+  "accessDenied": "Access Denied"
 }

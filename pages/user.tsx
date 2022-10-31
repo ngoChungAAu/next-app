@@ -17,10 +17,12 @@ import React from "react";
 import Layout from "../component/Layout";
 import { getUsers } from "../services";
 import { CustomNextPage } from "./_app";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 const User: CustomNextPage = (props) => {
   const { data } = useQuery(["users"], getUsers);
-
+  const { t } = useTranslation("user");
   const users = data?.items || [];
   return (
     <>
@@ -31,10 +33,9 @@ const User: CustomNextPage = (props) => {
         <Container maxW="container.xl">
           <TableContainer>
             <Table variant="simple">
-              <TableCaption>Imperial to metric conversion factors</TableCaption>
               <Thead>
                 <Tr>
-                  <Th>Name</Th>
+                  <Th>{t("table.title.name")}</Th>
                   <Th>Email</Th>
                 </Tr>
               </Thead>
@@ -53,6 +54,15 @@ const User: CustomNextPage = (props) => {
     </>
   );
 };
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["user", "common"])),
+      // Will be passed to the page component as props
+    },
+  };
+}
 
 export default User;
 

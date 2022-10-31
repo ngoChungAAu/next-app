@@ -33,7 +33,7 @@ import { addPost, deletePost, getPosts, updatePost } from "../services";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 export type PostFormData = Pick<Post, "title" | "description">;
@@ -83,6 +83,8 @@ const ModalForm = ({
     initialValue.description
   );
 
+  const { t } = useTranslation("post");
+
   const handleSubmit = (e: FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     const submitValues = { title, description } as PostFormData;
@@ -98,14 +100,14 @@ const ModalForm = ({
         <ModalCloseButton />
         <ModalBody>
           <VStack>
-            <FormItem label={"Title:"}>
+            <FormItem label={t("title") + ":"}>
               <Input
                 required
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               />
             </FormItem>
-            <FormItem label={"Description:"}>
+            <FormItem label={t("description") + ":"}>
               <Input
                 required
                 onChange={(e) => setDescription(e.target.value)}
@@ -117,10 +119,10 @@ const ModalForm = ({
 
         <ModalFooter>
           <Button colorScheme="blue" mr={3} isLoading={isLoading} type="submit">
-            Save
+            {t("addPostForm.save")}
           </Button>
           <Button variant="ghost" onClick={onClose}>
-            Close
+            {t("addPostForm.close")}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -139,13 +141,15 @@ const DeleteModal = ({
 }) => {
   const { isLoading, mutateAsync } = useModalForm(onDelete, onClose);
 
+  const { t } = useTranslation("post");
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Delete Post</ModalHeader>
+        <ModalHeader>{t("deletePostForm.title")}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>Are you sure to delete this post ?</ModalBody>
+        <ModalBody>{t("deletePostForm.question")}</ModalBody>
 
         <ModalFooter>
           <Button
@@ -154,10 +158,10 @@ const DeleteModal = ({
             isLoading={isLoading}
             onClick={() => mutateAsync(id)}
           >
-            Delete
+            {t("deletePostForm.delete")}
           </Button>
           <Button variant="ghost" onClick={onClose}>
-            Close
+            {t("deletePostForm.close")}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -185,17 +189,19 @@ const Post: CustomNextPage = (props: any) => {
   const posts = data?.items || [];
   const selectPost = data?.items.find((post) => post._id === selectPostId);
 
-  const changeTo = router.locale === "en" ? "en" : "vi";
+  const onToggleLanguageClick = () => {
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, {
+      locale: router.locale === "en" ? "vi" : "en",
+    });
+  };
 
-  const { t } = useTranslation(["post"]);
+  const { t } = useTranslation("post");
   return (
     <>
       <Head>
         <title>Post</title>
       </Head>
-      <Link href="/post" locale={changeTo}>
-        <button>{t("change-locale", { changeTo })}</button>
-      </Link>
       <Layout>
         <Container maxW="container.xl">
           <Button
@@ -203,17 +209,16 @@ const Post: CustomNextPage = (props: any) => {
             style={{ marginLeft: "auto", marginRight: 0, display: "block" }}
             onClick={onOpen}
           >
-            {t("post:addButton")}
+            {t("addButton")}
           </Button>
           <TableContainer>
             <Table variant="simple">
-              <TableCaption>Imperial to metric conversion factors</TableCaption>
               <Thead>
                 <Tr>
-                  <Th>Title</Th>
-                  <Th>Description</Th>
-                  <Th>Post by</Th>
-                  <Th>Action</Th>
+                  <Th>{t("title")}</Th>
+                  <Th>{t("description")}</Th>
+                  <Th>{t("table.title.postBy")}</Th>
+                  <Th>{t("table.title.action")}</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -251,36 +256,36 @@ const Post: CustomNextPage = (props: any) => {
             </Table>
           </TableContainer>
         </Container>
-        <ModalForm
-          isOpen={isOpen}
-          onClose={onClose}
-          initialValue={{ title: "", description: "" }}
-          modalTitle={"Add post"}
-          onSubmit={addPost}
-        />
-        <ModalForm
-          isOpen={isEditModalOpen}
-          onClose={() => {
-            onEditModalClose();
-            setSelectPostId("");
-          }}
-          initialValue={{
-            title: selectPost?.title || "",
-            description: selectPost?.description || "",
-          }}
-          modalTitle={"Update post"}
-          onSubmit={(data) => updatePost({ ...data, id: selectPostId })}
-        />
-        <DeleteModal
-          isOpen={isDeleteModalOpen}
-          onClose={() => {
-            onDeleteModalClose();
-            setSelectPostId("");
-          }}
-          onDelete={deletePost}
-          id={selectPostId}
-        />
       </Layout>
+      <ModalForm
+        isOpen={isOpen}
+        onClose={onClose}
+        initialValue={{ title: "", description: "" }}
+        modalTitle={t("addPostForm.title")}
+        onSubmit={addPost}
+      />
+      <ModalForm
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          onEditModalClose();
+          setSelectPostId("");
+        }}
+        initialValue={{
+          title: selectPost?.title || "",
+          description: selectPost?.description || "",
+        }}
+        modalTitle={t("updatePostForm.title")}
+        onSubmit={(data) => updatePost({ ...data, id: selectPostId })}
+      />
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          onDeleteModalClose();
+          setSelectPostId("");
+        }}
+        onDelete={deletePost}
+        id={selectPostId}
+      />
     </>
   );
 };
@@ -290,7 +295,7 @@ export default Post;
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "en", ["post"])),
+      ...(await serverSideTranslations(locale ?? "en", ["post", "common"])),
       // Will be passed to the page component as props
     },
   };

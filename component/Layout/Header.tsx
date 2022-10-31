@@ -18,8 +18,8 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink, { LinkProps } from "next/link";
 import { signOut } from "next-auth/react";
-
-const Links = ["Post", "User"];
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const NavLink = ({
   children,
@@ -27,27 +27,44 @@ const NavLink = ({
 }: {
   children: ReactNode;
   href: LinkProps["href"];
-}) => (
-  <NextLink href={href} legacyBehavior>
-    <Link
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-    >
-      {children}
-    </Link>
-  </NextLink>
-);
+}) => {
+  return (
+    <NextLink href={href} legacyBehavior>
+      <Link
+        px={2}
+        py={1}
+        rounded={"md"}
+        _hover={{
+          textDecoration: "none",
+          bg: useColorModeValue("gray.200", "gray.700"),
+        }}
+      >
+        {children}
+      </Link>
+    </NextLink>
+  );
+};
 
 export default function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const router = useRouter();
+
+  const { t } = useTranslation("common");
+
+  const Links = ["post", "user"];
+
+  const changeTo = router.locale === "en" ? "vi" : "en";
+
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/login" });
+  };
+
+  const handleChangeLanguage = () => {
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, {
+      locale: router.locale === "vi" ? "en" : "vi",
+    });
   };
 
   return (
@@ -70,7 +87,7 @@ export default function Header() {
             >
               {Links.map((link) => (
                 <NavLink key={link} href={link.toLowerCase()}>
-                  {link}
+                  {t(`navbar.${link}`)}
                 </NavLink>
               ))}
             </HStack>
@@ -92,7 +109,12 @@ export default function Header() {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>{t("logout")}</MenuItem>
+                <MenuItem onClick={handleChangeLanguage}>
+                  {t("changeLocale", {
+                    changeTo: router.locale,
+                  })}
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>
