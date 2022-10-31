@@ -1,3 +1,25 @@
 {
-  "addButton": "Add new post"
+  "addButton": "Add new post",
+  "title": "Title",
+  "description": "Description",
+  "addPostForm": {
+    "title": "Add Post",
+    "save": "Save",
+    "close": "Close"
+  },
+  "updatePostForm": {
+    "title": "Update Post"
+  },
+  "deletePostForm": {
+    "title": "Delete Post",
+    "question": "Are you sure to delete this post ?",
+    "delete": "Delete",
+    "close": "Close"
+  },
+  "table": {
+    "title": {
+      "postBy": "Post by",
+      "action": "Action"
+    }
+  }
 }

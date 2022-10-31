@@ -1,3 +1,9 @@
 {
-  "title": "Những bài báo của tôi"
+  "navbar": {
+    "post": "Bài viết",
+    "user": "Người dùng"
+  },
+  "logout": "Đăng xuất",
+  "changeLocale": "Ngôn ngữ: {{changeTo}}",
+  "accessDenied": "Quyền truy cập bị từ chối"
 }

@@ -1,0 +1,15 @@
+{
+  "title": "Welcome",
+  "input": {
+    "email": {
+      "placeholder": "Email address"
+    },
+    "password": {
+      "placeholder": "Password",
+      "hide": "Hide",
+      "show": "Show"
+    }
+  },
+
+  "login": "Login"
+}

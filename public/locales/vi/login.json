@@ -1,0 +1,14 @@
+{
+  "title": "Chào mừng",
+  "input": {
+    "email": {
+      "placeholder": "Địa chỉ email"
+    },
+    "password": {
+      "placeholder": "Mật khẩu",
+      "hide": "Ẩn",
+      "show": "Hiện"
+    }
+  },
+  "login": "Đăng nhập"
+}

@@ -1,3 +1,25 @@
 {
-  "addButton": "Thêm bài viết mới"
+  "addButton": "Thêm bài viết mới",
+  "title": "Tiêu đề",
+  "description": "Mô tả",
+  "addPostForm": {
+    "title": "Thêm bài viết",
+    "save": "Lưu lại",
+    "close": "Đóng"
+  },
+  "deletePostForm": {
+    "title": "Xoá bài viết",
+    "question": "Bạn có chắc chắn muốn xoá bài viết này ?",
+    "delete": "Xoá",
+    "close": "Đóng"
+  },
+  "updatePostForm": {
+    "title": "Cập nhật bài viết"
+  },
+  "table": {
+    "title": {
+      "postBy": "Tác giả",
+      "action": "Hành động"
+    }
+  }
 }

@@ -12,6 +12,8 @@ import { CHECK_FUNCTION_MAP, Relation, Schema } from "../utils";
 import Redirect from "../component/Redirect";
 import RefreshTokenHandler from "../component/RefreshTokenHandler";
 import { appWithTranslation } from "next-i18next";
+import Layout from "../component/Layout";
+import { useTranslation } from "next-i18next";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (pageProps: AppProps, page: ReactElement) => ReactNode;
@@ -54,11 +56,12 @@ export default appWithTranslation(App);
 function Auth(Component: CustomNextPage) {
   return function ComponentWithAuth(props: any) {
     const { data: session, status } = useSession();
-
+    const { t } = useTranslation("common");
     // @ts-ignored
     const permissions = session?.user?.permissions?.[0];
     // @ts-ignored
     const accessToken = session?.user?.accessToken;
+
     useEffect(() => {
       if (session?.error === "RefreshAccessTokenError") {
         signOut({ callbackUrl: "/login" });
@@ -99,8 +102,8 @@ function Auth(Component: CustomNextPage) {
       return <Redirect to="/login" />;
     }
 
-    if (grant === false) {
-      return <div>Access denied</div>;
+    if (!grant) {
+      return <Layout>{t("accessDenied")}</Layout>;
     }
 
     // Session is being fetched, or no user.
