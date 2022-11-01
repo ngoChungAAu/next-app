@@ -189,13 +189,6 @@ const Post: CustomNextPage = (props: any) => {
   const posts = data?.items || [];
   const selectPost = data?.items.find((post) => post._id === selectPostId);
 
-  const onToggleLanguageClick = () => {
-    const { pathname, asPath, query } = router;
-    router.push({ pathname, query }, asPath, {
-      locale: router.locale === "en" ? "vi" : "en",
-    });
-  };
-
   const { t } = useTranslation("post");
   return (
     <>
@@ -211,6 +204,7 @@ const Post: CustomNextPage = (props: any) => {
           >
             {t("addButton")}
           </Button>
+          <h1>{t("totalPost", { count: posts?.length })}</h1>
           <TableContainer>
             <Table variant="simple">
               <Thead>
@@ -219,6 +213,7 @@ const Post: CustomNextPage = (props: any) => {
                   <Th>{t("description")}</Th>
                   <Th>{t("table.title.postBy")}</Th>
                   <Th>{t("table.title.action")}</Th>
+                  <Th>{t("table.title.createdAt")}</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -249,6 +244,9 @@ const Post: CustomNextPage = (props: any) => {
                           }}
                         />
                       </HStack>
+                    </Td>
+                    <Td>
+                      {new Date(post?.createdAt).toLocaleString(router.locale)}
                     </Td>
                   </Tr>
                 ))}

@@ -54,8 +54,6 @@ export default function Header() {
 
   const Links = ["post", "user"];
 
-  const changeTo = router.locale === "en" ? "vi" : "en";
-
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/login" });
   };
@@ -112,7 +110,7 @@ export default function Header() {
                 <MenuItem onClick={handleLogout}>{t("logout")}</MenuItem>
                 <MenuItem onClick={handleChangeLanguage}>
                   {t("changeLocale", {
-                    changeTo: router.locale,
+                    changeTo: router.locale === "en" ? "vi" : "en",
                   })}
                 </MenuItem>
               </MenuList>

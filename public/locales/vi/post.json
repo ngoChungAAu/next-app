@@ -16,10 +16,14 @@
   "updatePostForm": {
     "title": "Cập nhật bài viết"
   },
+  "totalPost": "Tổng: {{count}} bài viết",
+  "totalPost_zero": "Không tìm thấy bài viết",
+  "totalPost_plural": "Tổng: {{count}} bài viết",
   "table": {
     "title": {
       "postBy": "Tác giả",
-      "action": "Hành động"
+      "action": "Hành động",
+      "createdAt": "Ngày tạo"
     }
   }
 }
