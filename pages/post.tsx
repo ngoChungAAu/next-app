@@ -190,8 +190,9 @@ const Post: CustomNextPage = (props: any) => {
   const posts = data?.items || [];
   const selectPost = data?.items.find((post) => post._id === selectPostId);
 
-  const { t } = useTranslation("post");
   const [settings] = useLanguageContext();
+
+  const { t } = useTranslation(["post", "common"]);
 
   return (
     <>
@@ -200,6 +201,7 @@ const Post: CustomNextPage = (props: any) => {
       </Head>
       <Layout>
         <Container maxW="container.xl">
+          <h1>{t("common:404", "Error message")}</h1>
           <Button
             colorScheme="blue"
             style={{ marginLeft: "auto", marginRight: 0, display: "block" }}
