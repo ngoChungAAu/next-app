@@ -16,10 +16,14 @@
     "delete": "Delete",
     "close": "Close"
   },
+  "totalPost_one": "Total: {{count}} post",
+  "totalPost_zero": "Not found post",
+  "totalPost_other": "Total: {{count}} posts",
   "table": {
     "title": {
       "postBy": "Post by",
-      "action": "Action"
+      "action": "Action",
+      "createdAt": "Created At"
     }
   }
 }
