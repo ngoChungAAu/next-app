@@ -14,6 +14,7 @@ import RefreshTokenHandler from "../component/RefreshTokenHandler";
 import { appWithTranslation } from "next-i18next";
 import Layout from "../component/Layout";
 import { useTranslation } from "next-i18next";
+import nextI18nConfig from "../next-i18next.config";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (pageProps: AppProps, page: ReactElement) => ReactNode;
@@ -37,10 +38,8 @@ function App({
     ? Auth(OrginalComponent)
     : OrginalComponent;
 
-  const [interval, setInterval] = useState(0);
-
   return (
-    <SessionProvider session={session} refetchInterval={interval}>
+    <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider>
           <Component {...pageProps} />
@@ -51,7 +50,7 @@ function App({
   );
 }
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, nextI18nConfig);
 
 function Auth(Component: CustomNextPage) {
   return function ComponentWithAuth(props: any) {
