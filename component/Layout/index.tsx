@@ -22,21 +22,23 @@ export default function Layout(props: Props) {
     : "";
 
   return (
-    <Grid
-      templateAreas={`"header header" ${styleLayout}`}
-      templateColumns={sizeLayout}
-    >
-      <GridItem area={"header"}>
-        <Header />
-      </GridItem>
-      {props.type && (
-        <GridItem mt="3" area={"nav"}>
-          <Sidebar />
+    <Container maxW="container.xl">
+      <Grid
+        templateAreas={`"header header" ${styleLayout}`}
+        templateColumns={sizeLayout}
+      >
+        <GridItem area={"header"}>
+          <Header />
         </GridItem>
-      )}
-      <GridItem mt="3" area={"main"}>
-        {props.children}
-      </GridItem>
-    </Grid>
+        {props.type && (
+          <GridItem mt="3" area={"nav"}>
+            <Sidebar />
+          </GridItem>
+        )}
+        <GridItem mt="3" area={"main"}>
+          {props.children}
+        </GridItem>
+      </Grid>
+    </Container>
   );
 }
