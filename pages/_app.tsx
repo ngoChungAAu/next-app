@@ -45,7 +45,6 @@ function App({
           <Component {...pageProps} />
         </ChakraProvider>
       </QueryClientProvider>
-      <RefreshTokenHandler setInterval={setInterval} />
     </SessionProvider>
   );
 }
@@ -98,7 +97,7 @@ function Auth(Component: CustomNextPage) {
     }
 
     if (status === "unauthenticated") {
-      return <Redirect to="/login" />;
+      return null;
     }
 
     if (!grant) {

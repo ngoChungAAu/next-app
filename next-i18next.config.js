@@ -8,11 +8,11 @@ module.exports = {
   i18n: {
     locales: ["default", "en", "vi"],
     defaultLocale: "default",
-    localeDetection: false,
-    backend: {
-      // TODO: Fallback value when cannot load translation from backend
-      loadPath: `http://127.0.0.1:3000/locales/{{lng}}/{{ns}}`,
-    },
+  },
+  localeDetection: false,
+  backend: {
+    // TODO: Fallback value when cannot load translation from backend
+    loadPath: `http://127.0.0.1:3000/locales/{{lng}}/{{ns}}`,
   },
   // localePath:
   //   typeof window === "undefined"
