@@ -15,6 +15,7 @@ import { appWithTranslation } from "next-i18next";
 import Layout from "../component/Layout";
 import { useTranslation } from "next-i18next";
 import nextI18nConfig from "../next-i18next.config";
+import { LanguageProvider } from "../context";
 
 export type CustomNextPage<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (pageProps: AppProps, page: ReactElement) => ReactNode;
@@ -42,7 +43,9 @@ function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider>
-          <Component {...pageProps} />
+          <LanguageProvider>
+            <Component {...pageProps} />
+          </LanguageProvider>
         </ChakraProvider>
       </QueryClientProvider>
     </SessionProvider>

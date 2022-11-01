@@ -14,12 +14,17 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Text,
+  FormLabel,
+  FormControl,
+  Select,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink, { LinkProps } from "next/link";
 import { signOut } from "next-auth/react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { useLanguageContext } from "../../context";
 
 const NavLink = ({
   children,
@@ -51,6 +56,7 @@ export default function Header() {
   const router = useRouter();
 
   const { t } = useTranslation("common");
+  const [settings, changeSetting] = useLanguageContext();
 
   const Links = ["post", "user"];
 
@@ -90,7 +96,22 @@ export default function Header() {
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={"center"}>
+          <Flex alignItems={"center"} gap={5}>
+            <HStack>
+              <Text color="blue" whiteSpace={"nowrap"}>
+                Date time format
+              </Text>
+              <Select
+                placeholder="Select format"
+                onChange={(e) =>
+                  changeSetting({ key: "datetime", lng: e.target.value })
+                }
+                value={settings.datetime}
+              >
+                <option value="en">English</option>
+                <option value="vi">Vietnam</option>
+              </Select>
+            </HStack>
             <Menu>
               <MenuButton
                 as={Button}

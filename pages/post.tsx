@@ -13,7 +13,6 @@ import {
   ModalOverlay,
   ModalProps,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
@@ -36,6 +35,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useLanguageContext } from "../context";
+
 export type PostFormData = Pick<Post, "title" | "description">;
 
 const useModalForm = (
@@ -141,7 +142,7 @@ const DeleteModal = ({
 }) => {
   const { isLoading, mutateAsync } = useModalForm(onDelete, onClose);
 
-  const { t } = useTranslation("post");
+  const { t } = useTranslation(["post", "common"]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -190,6 +191,8 @@ const Post: CustomNextPage = (props: any) => {
   const selectPost = data?.items.find((post) => post._id === selectPostId);
 
   const { t } = useTranslation("post");
+  const [settings] = useLanguageContext();
+
   return (
     <>
       <Head>
@@ -246,7 +249,21 @@ const Post: CustomNextPage = (props: any) => {
                       </HStack>
                     </Td>
                     <Td>
-                      {new Date(post?.createdAt).toLocaleString(router.locale)}
+                      {t("dateTime", {
+                        val: new Date(post?.createdAt),
+                        lng: settings.datetime,
+                        ns: "common",
+                        formatParams: {
+                          val: {
+                            year: "numeric",
+                            month: "numeric",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                          },
+                        },
+                      })}
                     </Td>
                   </Tr>
                 ))}

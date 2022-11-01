@@ -5,5 +5,6 @@
   },
   "logout": "Đăng xuất",
   "changeLocale": "Ngôn ngữ: {{changeTo}}",
-  "accessDenied": "Quyền truy cập bị từ chối"
+  "accessDenied": "Quyền truy cập bị từ chối",
+  "dateTime": "{{val, datetime}}"
 }
