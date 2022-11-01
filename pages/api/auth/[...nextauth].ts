@@ -25,6 +25,35 @@ async function refreshAccessToken(tokenObject: any) {
         accessToken: res.data.accessToken,
         refreshToken: res.data.refreshToken,
         expireIn: res.data.expAccessToken * 1000,
+        ...tokenObject.user,
+      },
+    };
+  } catch (error) {
+    return {
+      ...tokenObject,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
+
+async function getProfile(tokenObject: any) {
+  const { accessToken } = tokenObject.user;
+
+  try {
+    // Get a new set of tokens with a refreshToken
+    const res = await axios.post(`${process.env.BASE_URL}/user/profile`, {
+      headers: {
+        Authorization: "Bearer " + accessToken,
+      },
+    });
+
+    return {
+      ...tokenObject,
+      user: {
+        id: res.data._id,
+        role: res.data.role,
+        lang: "en",
+        ...tokenObject.user,
       },
     };
   } catch (error) {
@@ -79,6 +108,7 @@ const authOptions: NextAuthOptions = {
             refreshToken,
             role: data.user.role,
             expireIn: expAccessToken * 1000,
+            lang: "en",
           },
         };
       }
@@ -90,7 +120,7 @@ const authOptions: NextAuthOptions = {
 
       // If the token is still valid, just return it.
       if (shouldRefreshTime > 0) {
-        return token;
+        return getProfile(token);
       }
 
       // Access token has expired, try to update it

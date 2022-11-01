@@ -56,8 +56,9 @@ export default appWithTranslation(App, nextI18nConfig);
 
 function Auth(Component: CustomNextPage) {
   return function ComponentWithAuth(props: any) {
-    const { data: session, status } = useSession();
-    const { t } = useTranslation("common");
+    const { data: session, status } = useSession() as any;
+    const { t, i18n } = useTranslation("common");
+
     // @ts-ignored
     const permissions = session?.user?.permissions?.[0];
     // @ts-ignored
@@ -71,6 +72,10 @@ function Auth(Component: CustomNextPage) {
       if (status === "loading") return;
 
       if (status === "unauthenticated") signIn();
+
+      if (session?.user?.lang) {
+        i18n.changeLanguage(session?.user?.lang);
+      }
     }, [status, session]);
 
     const acQuery = useMemo(() => {
