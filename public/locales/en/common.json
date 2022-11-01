@@ -6,5 +6,6 @@
   "logout": "Logout",
   "changeLocale": "Language: {{changeTo}}",
   "accessDenied": "Access Denied",
-  "dateTime": "{{val, datetime}}"
+  "dateTime": "{{val, datetime}}",
+  "404": "Page not found"
 }

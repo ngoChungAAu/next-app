@@ -6,5 +6,6 @@
   "logout": "Đăng xuất",
   "changeLocale": "Ngôn ngữ: {{changeTo}}",
   "accessDenied": "Quyền truy cập bị từ chối",
-  "dateTime": "{{val, datetime}}"
+  "dateTime": "{{val, datetime}}",
+  "404": "Không tìm thấy trang"
 }
