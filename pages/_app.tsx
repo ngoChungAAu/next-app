@@ -105,7 +105,7 @@ function Auth(Component: CustomNextPage) {
     }
 
     if (!grant) {
-      return <Layout>{t("accessDenied")}</Layout>;
+      return <Layout>{t("Access Denied")}</Layout>;
     }
 
     // Session is being fetched, or no user.

@@ -1,11 +1,10 @@
 {
+  "Logout": "Đăng xuất",
+  "Change Locale": "Ngôn ngữ: {{changeTo}}",
+  "Access Denied": "Quyền truy cập bị từ chối",
+  "Date Time": "{{val, datetime}}",
   "navbar": {
-    "post": "Bài viết",
-    "user": "Người dùng"
-  },
-  "logout": "Đăng xuất",
-  "changeLocale": "Ngôn ngữ: {{changeTo}}",
-  "accessDenied": "Quyền truy cập bị từ chối",
-  "dateTime": "{{val, datetime}}",
-  "404": "Không tìm thấy trang"
+    "Post": "Bài viết",
+    "User": "Người dùng"
+  }
 }

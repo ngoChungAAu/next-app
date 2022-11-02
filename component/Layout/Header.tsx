@@ -22,7 +22,7 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink, { LinkProps } from "next/link";
 import { signOut } from "next-auth/react";
-import { useTranslation } from "next-i18next";
+import { Trans, useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { useLanguageContext } from "../../context";
 
@@ -55,10 +55,10 @@ export default function Header() {
 
   const router = useRouter();
 
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(["common"]);
   const [settings, changeSetting] = useLanguageContext();
 
-  const Links = ["post", "user"];
+  const Links = ["Post", "User"];
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/login" });
@@ -70,7 +70,8 @@ export default function Header() {
       locale: router.locale === "vi" ? "en" : "vi",
     });
   };
-
+  const { name } = { name: "Tam" };
+  const count = 3434;
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -128,9 +129,9 @@ export default function Header() {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={handleLogout}>{t("logout")}</MenuItem>
+                <MenuItem onClick={handleLogout}>{t("Logout")}</MenuItem>
                 <MenuItem onClick={handleChangeLanguage}>
-                  {t("changeLocale", {
+                  {t("Change Locale", {
                     changeTo: router.locale === "en" ? "vi" : "en",
                   })}
                 </MenuItem>

@@ -1,14 +1,10 @@
 {
-  "addButton": "Add new post",
-  "title": "Title",
-  "description": "Description",
+  "Title": "Title",
+  "Description": "Description",
   "addPostForm": {
-    "title": "Add Post",
     "save": "Save",
-    "close": "Close"
-  },
-  "updatePostForm": {
-    "title": "Update Post"
+    "close": "Close",
+    "title": "Add Post"
   },
   "deletePostForm": {
     "title": "Delete Post",
@@ -16,14 +12,18 @@
     "delete": "Delete",
     "close": "Close"
   },
+  "addButton": "Add new post",
   "totalPost_one": "Total: {{count,number}} post",
-  "totalPost_zero": "Not found post",
   "totalPost_other": "Total: {{count,number}} posts",
   "table": {
     "title": {
-      "postBy": "Post by",
-      "action": "Action",
-      "createdAt": "Created At"
+      "Post By": "Post By",
+      "Action": "Action",
+      "Created At": "Created At"
     }
-  }
+  },
+  "updatePostForm": {
+    "title": "Update Post"
+  },
+  "totalPost_zero": "Total: {{count,number}} post"
 }

@@ -1,11 +1,10 @@
 {
+  "Logout": "Logout",
+  "Change Locale": "Language: {{changeTo}}",
+  "Access Denied": "Access Denied",
+  "Date Time": "{{val, datetime}}",
   "navbar": {
-    "post": "Post",
-    "user": "User"
-  },
-  "logout": "Logout",
-  "changeLocale": "Language: {{changeTo}}",
-  "accessDenied": "Access Denied",
-  "dateTime": "{{val, datetime}}",
-  "404": "Page not found"
+    "Post": "Post",
+    "User": "User"
+  }
 }
