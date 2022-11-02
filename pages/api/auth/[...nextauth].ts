@@ -1,6 +1,14 @@
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import axios from "axios";
+import Cookies from "cookies";
+import { signOut } from "next-auth/react";
+
+type NextAuthOptionsCallback = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => NextAuthOptions;
 
 async function refreshAccessToken(tokenObject: any) {
   const { accessToken, refreshToken } = tokenObject.user;
@@ -52,7 +60,6 @@ async function getProfile(tokenObject: any) {
       user: {
         id: res.data._id,
         role: res.data.role,
-        lang: "en",
         ...tokenObject.user,
       },
     };
@@ -64,78 +71,96 @@ async function getProfile(tokenObject: any) {
   }
 }
 
-const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      type: "credentials",
-      credentials: {},
-      async authorize(credentials) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
+const nextAuthOptions: NextAuthOptionsCallback = (req, res) => {
+  const cookies = new Cookies(req, res);
 
-        const res = await axios.post(`${process.env.BASE_URL}/auth/login`, {
-          email,
-          password,
-        });
+  return {
+    providers: [
+      CredentialsProvider({
+        type: "credentials",
+        credentials: {},
+        async authorize(credentials) {
+          const { email, password } = credentials as {
+            email: string;
+            password: string;
+          };
 
-        if (!!res.data) {
-          return res.data;
-        } else {
-          return null;
-        }
-      },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, user }: any) {
-      if (!!user) {
-        const {
-          accessToken,
-          refreshToken,
-          permissions,
-          expAccessToken,
-          ...data
-        } = user;
+          const response = await axios.post(
+            `${process.env.BASE_URL}/auth/login`,
+            {
+              email,
+              password,
+            },
+            {
+              withCredentials: true,
+            }
+          );
 
-        return {
-          ...token,
-          user: {
-            id: data.user._id,
-            permissions,
+          cookies.set("NEXT_LOCALE", "vi");
+
+          if (!!response.data) {
+            return response.data;
+          } else {
+            return null;
+          }
+        },
+      }),
+    ],
+    callbacks: {
+      async jwt({ token, user }: any) {
+        if (!!user) {
+          const {
             accessToken,
             refreshToken,
-            role: data.user.role,
-            expireIn: expAccessToken * 1000,
-            lang: "en",
-          },
-        };
-      }
+            permissions,
+            expAccessToken,
+            ...data
+          } = user;
 
-      // refresh before expire in 10 mins
-      const shouldRefreshTime = Math.round(
-        token.user.expireIn - 10 * 60 * 1000 - Date.now()
-      );
+          return {
+            ...token,
+            user: {
+              id: data.user._id,
+              permissions,
+              accessToken,
+              refreshToken,
+              role: data.user.role,
+              expireIn: expAccessToken * 1000,
+            },
+          };
+        }
 
-      // If the token is still valid, just return it.
-      if (shouldRefreshTime > 0) {
-        return getProfile(token);
-      }
+        // refresh before expire in 10 mins
+        const shouldRefreshTime = Math.round(
+          token.user.expireIn - 10 * 60 * 1000 - Date.now()
+        );
 
-      // Access token has expired, try to update it
-      return refreshAccessToken(token);
+        // If the token is still valid, just return it.
+        if (shouldRefreshTime > 0) {
+          if (token.user.accessToken) {
+            return getProfile(token);
+          } else return token;
+        }
+
+        // Access token has expired, try to update it
+        return refreshAccessToken(token);
+      },
+
+      async session({ session, token }: any) {
+        session.user = token.user;
+
+        return session;
+      },
     },
-
-    async session({ session, token }: any) {
-      session.user = token.user;
-
-      return session;
+    events: {
+      async signOut() {
+        console.log("logout");
+      },
     },
-  },
-  pages: {
-    signIn: "/login",
-  },
+    pages: {
+      signIn: "/login",
+    },
+  };
 };
 
 declare module "next-auth" {
@@ -144,4 +169,6 @@ declare module "next-auth" {
   }
 }
 
-export default NextAuth(authOptions);
+// eslint-disable-next-line import/no-anonymous-default-export
+export default (req: NextApiRequest, res: NextApiResponse) =>
+  NextAuth(req, res, nextAuthOptions(req, res));
