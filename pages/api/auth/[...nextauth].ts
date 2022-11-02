@@ -41,7 +41,7 @@ async function getProfile(tokenObject: any) {
 
   try {
     // Get a new set of tokens with a refreshToken
-    const res = await axios.post(`${process.env.BASE_URL}/user/profile`, {
+    const res = await axios.get(`${process.env.BASE_URL}/user/profile`, {
       headers: {
         Authorization: "Bearer " + accessToken,
       },

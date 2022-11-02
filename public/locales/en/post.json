@@ -16,9 +16,9 @@
     "delete": "Delete",
     "close": "Close"
   },
-  "totalPost_one": "Total: {{count}} post",
+  "totalPost_one": "Total: {{count,number}} post",
   "totalPost_zero": "Not found post",
-  "totalPost_other": "Total: {{count}} posts",
+  "totalPost_other": "Total: {{count,number}} posts",
   "table": {
     "title": {
       "postBy": "Post by",

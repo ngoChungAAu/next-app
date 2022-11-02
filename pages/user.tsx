@@ -1,12 +1,9 @@
 import {
-  Button,
   Container,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -55,7 +52,7 @@ const User: CustomNextPage = (props) => {
   );
 };
 
-export async function getStaticProps({ locale }: { locale: string }) {
+export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en", ["user", "common"])),

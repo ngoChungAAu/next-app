@@ -99,7 +99,7 @@ export default function Header() {
           <Flex alignItems={"center"} gap={5}>
             <HStack>
               <Text color="blue" whiteSpace={"nowrap"}>
-                Date time format
+                Format
               </Text>
               <Select
                 placeholder="Select format"
@@ -109,7 +109,7 @@ export default function Header() {
                 value={settings.datetime}
               >
                 <option value="en">English</option>
-                <option value="vi">Vietnam</option>
+                <option value="de">German</option>
               </Select>
             </HStack>
             <Menu>

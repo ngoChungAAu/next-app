@@ -16,9 +16,9 @@
   "updatePostForm": {
     "title": "Cập nhật bài viết"
   },
-  "totalPost": "Tổng: {{count}} bài viết",
+  "totalPost": "Tổng: {{count,number}} bài viết",
   "totalPost_zero": "Không tìm thấy bài viết",
-  "totalPost_plural": "Tổng: {{count}} bài viết",
+  "totalPost_plural": "Tổng: {{count,number}} bài viết",
   "table": {
     "title": {
       "postBy": "Tác giả",

@@ -1,16 +1,10 @@
 import { useRouter } from "next/router";
-import {
-  createContext,
-  useContext,
-  useReducer,
-  ReducerState,
-  Dispatch,
-  ReducerAction,
-} from "react";
+import { createContext, useContext, useReducer, Dispatch } from "react";
 
 const LanguageContext = createContext<
   [Record<string, string>, Dispatch<Action>] | null
 >(null);
+LanguageContext.displayName = "LanguageContext";
 
 export const useLanguageContext = () => {
   const context = useContext(LanguageContext);

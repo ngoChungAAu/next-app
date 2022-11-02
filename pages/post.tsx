@@ -33,7 +33,6 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useSession } from "next-auth/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useLanguageContext } from "../context";
 
@@ -172,7 +171,6 @@ const DeleteModal = ({
 
 const Post: CustomNextPage = (props: any) => {
   const { data } = useQuery(["posts"], getPosts);
-  const { data: session } = useSession();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -186,11 +184,11 @@ const Post: CustomNextPage = (props: any) => {
     onClose: onEditModalClose,
   } = useDisclosure();
   const [selectPostId, setSelectPostId] = useState("");
-  const router = useRouter();
   const posts = data?.items || [];
-  const selectPost = data?.items.find((post) => post._id === selectPostId);
+  const selectPost = posts.find((post) => post._id === selectPostId);
 
   const [settings] = useLanguageContext();
+  const { locale } = useRouter();
 
   const { t } = useTranslation(["post", "common"]);
 
@@ -201,7 +199,6 @@ const Post: CustomNextPage = (props: any) => {
       </Head>
       <Layout>
         <Container maxW="container.xl">
-          <h1>{t("common:404", "Error message")}</h1>
           <Button
             colorScheme="blue"
             style={{ marginLeft: "auto", marginRight: 0, display: "block" }}
@@ -209,7 +206,11 @@ const Post: CustomNextPage = (props: any) => {
           >
             {t("addButton")}
           </Button>
-          <h1>{t("totalPost", { count: posts?.length })}</h1>
+          <h1>
+            {t("totalPost", {
+              count: 11,
+            })}
+          </h1>
           <TableContainer>
             <Table variant="simple">
               <Thead>
@@ -309,7 +310,7 @@ const Post: CustomNextPage = (props: any) => {
 
 export default Post;
 
-export async function getStaticProps({ locale }: { locale: string }) {
+export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en", ["post", "common"])),
