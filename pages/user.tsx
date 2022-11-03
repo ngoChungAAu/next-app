@@ -19,13 +19,13 @@ import { useTranslation } from "next-i18next";
 
 const User: CustomNextPage = (props) => {
   const { data } = useQuery(["users"], getUsers);
-  const { t: c } = useTranslation("common");
-  const { t } = useTranslation("user");
+  // const { t: c } = useTranslation("common");
+  const { t } = useTranslation(["user", "common"]);
   const users = data?.items || [];
   return (
     <>
       <Head>
-        <title>{c("navbar.User")}</title>
+        <title>{t("navbar.User", { ns: "common" })}</title>
       </Head>
       <Layout>
         <Container maxW="container.xl">

@@ -2,9 +2,9 @@
   "Logout": "Đăng xuất",
   "Change Locale": "Ngôn ngữ: {{changeTo}}",
   "Access Denied": "Quyền truy cập bị từ chối",
-  "Date Time": "{{val, datetime}}",
   "navbar": {
     "Post": "Bài viết",
     "User": "Người dùng"
-  }
+  },
+  "Date Time": "{{val, datetime}}"
 }

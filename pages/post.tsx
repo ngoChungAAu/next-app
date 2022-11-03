@@ -190,13 +190,13 @@ const Post: CustomNextPage = (props: any) => {
   const [settings] = useLanguageContext();
   const { locale } = useRouter();
 
-  const { t: c } = useTranslation(["common"]);
-  const { t } = useTranslation(["post"]);
+  // const { t: c } = useTranslation(["common"]);
+  const { t } = useTranslation(["post", "common"]);
 
   return (
     <>
       <Head>
-        <title>{c("navbar.Post")}</title>
+        <title>{t("navbar.Post", { ns: "common" })}</title>
       </Head>
       <Layout>
         <Container maxW="container.xl">
