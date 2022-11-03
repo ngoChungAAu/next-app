@@ -11,6 +11,7 @@ const RefreshTokenHandler = ({ setInterval }: any) => {
       const timeRemaining = Math.round(
         (user.expireIn - 5 * 60 * 1000 - Date.now()) / 1000
       );
+
       setInterval(timeRemaining > 0 ? timeRemaining : 0);
     }
   }, [session]);

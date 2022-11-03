@@ -1,4 +1,5 @@
 import axios from "axios";
+import { signOut } from "next-auth/react";
 import { PostFormData } from "./pages/post";
 
 const client = axios.create({
@@ -23,7 +24,12 @@ client.interceptors.request.use(function (config) {
 export const getPosts = () =>
   client
     .get<{ totalItems: number; items: Post[] }>("/post")
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch(async (error) => {
+      if (error.response.status === 401) {
+        await signOut({ callbackUrl: "/login", redirect: false });
+      }
+    });
 
 export const addPost = (data: PostFormData) => client.post("/post", data);
 
@@ -37,4 +43,9 @@ export const deletePost = (id: string) => client.delete(`/post/${id}`);
 export const getUsers = () =>
   client
     .get<{ totalItems: number; items: User[] }>("/user")
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch(async (error) => {
+      if (error.response.status === 401) {
+        await signOut({ callbackUrl: "/login", redirect: false });
+      }
+    });
