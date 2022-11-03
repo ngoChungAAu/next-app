@@ -61,7 +61,7 @@ export default function Header() {
   const Links = ["Post", "User"];
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/login" });
+    await signOut({ callbackUrl: "/login", redirect: false });
   };
 
   const handleChangeLanguage = () => {

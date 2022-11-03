@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import axios from "axios";
 import Cookies from "cookies";
-import { signOut } from "next-auth/react";
 
 type NextAuthOptionsCallback = (
   req: NextApiRequest,
@@ -27,15 +26,13 @@ async function refreshAccessToken(tokenObject: any) {
       }
     );
 
-    return {
-      ...tokenObject,
-      user: {
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken,
-        expireIn: res.data.expAccessToken * 1000,
-        ...tokenObject.user,
-      },
-    };
+    if (res.data) {
+      tokenObject.user.accessToken = res.data.accessToken;
+      tokenObject.user.refreshToken = res.data.refreshToken;
+      tokenObject.user.expireIn = res.data.expAccessToken * 1000;
+    }
+
+    return tokenObject;
   } catch (error) {
     return {
       ...tokenObject,
@@ -48,25 +45,21 @@ async function getProfile(tokenObject: any) {
   const { accessToken } = tokenObject.user;
 
   try {
-    // Get a new set of tokens with a refreshToken
     const res = await axios.get(`${process.env.BASE_URL}/user/profile`, {
       headers: {
         Authorization: "Bearer " + accessToken,
       },
     });
 
-    return {
-      ...tokenObject,
-      user: {
-        id: res.data._id,
-        role: res.data.role,
-        ...tokenObject.user,
-      },
-    };
+    if (res.data) {
+      tokenObject.user.id = res.data._id;
+      tokenObject.user.role = res.data.role;
+    }
+
+    return tokenObject;
   } catch (error) {
     return {
-      ...tokenObject,
-      error: "RefreshAccessTokenError",
+      error: "Error",
     };
   }
 }
@@ -137,9 +130,7 @@ const nextAuthOptions: NextAuthOptionsCallback = (req, res) => {
 
         // If the token is still valid, just return it.
         if (shouldRefreshTime > 0) {
-          if (token.user.accessToken) {
-            return getProfile(token);
-          } else return token;
+          return getProfile(token);
         }
 
         // Access token has expired, try to update it
