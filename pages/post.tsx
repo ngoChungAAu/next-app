@@ -100,14 +100,14 @@ const ModalForm = ({
         <ModalCloseButton />
         <ModalBody>
           <VStack>
-            <FormItem label={t("title") + ":"}>
+            <FormItem label={t("Title") + ":"}>
               <Input
                 required
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               />
             </FormItem>
-            <FormItem label={t("description") + ":"}>
+            <FormItem label={t("Description") + ":"}>
               <Input
                 required
                 onChange={(e) => setDescription(e.target.value)}
@@ -190,12 +190,13 @@ const Post: CustomNextPage = (props: any) => {
   const [settings] = useLanguageContext();
   const { locale } = useRouter();
 
-  const { t } = useTranslation(["post", "common"]);
+  const { t: c } = useTranslation(["common"]);
+  const { t } = useTranslation(["post"]);
 
   return (
     <>
       <Head>
-        <title>Post</title>
+        <title>{c("navbar.Post")}</title>
       </Head>
       <Layout>
         <Container maxW="container.xl">
@@ -208,18 +209,18 @@ const Post: CustomNextPage = (props: any) => {
           </Button>
           <h1>
             {t("totalPost", {
-              count: 11,
+              count: posts?.length,
             })}
           </h1>
           <TableContainer>
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Th>{t("title")}</Th>
-                  <Th>{t("description")}</Th>
-                  <Th>{t("table.title.postBy")}</Th>
-                  <Th>{t("table.title.action")}</Th>
-                  <Th>{t("table.title.createdAt")}</Th>
+                  <Th>{t("Title")}</Th>
+                  <Th>{t("Description")}</Th>
+                  <Th>{t("table.title.Post By")}</Th>
+                  <Th>{t("table.title.Action")}</Th>
+                  <Th>{t("table.title.Created At")}</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -252,7 +253,7 @@ const Post: CustomNextPage = (props: any) => {
                       </HStack>
                     </Td>
                     <Td>
-                      {t("dateTime", {
+                      {t("Date Time", {
                         val: new Date(post?.createdAt),
                         lng: settings.datetime,
                         ns: "common",

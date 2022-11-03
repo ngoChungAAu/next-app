@@ -1,11 +1,10 @@
 {
-  "addButton": "Thêm bài viết mới",
-  "title": "Tiêu đề",
-  "description": "Mô tả",
+  "Title": "Tiêu đề",
+  "Description": "Mô tả",
   "addPostForm": {
-    "title": "Thêm bài viết",
     "save": "Lưu lại",
-    "close": "Đóng"
+    "close": "Đóng",
+    "title": "Thêm bài viết"
   },
   "deletePostForm": {
     "title": "Xoá bài viết",
@@ -13,17 +12,18 @@
     "delete": "Xoá",
     "close": "Đóng"
   },
+  "addButton": "Thêm bài viết mới",
+  "totalPost_other": "Tổng: {{count,number}} bài viết",
+  "table": {
+    "title": {
+      "Post By": "Tác giả",
+      "Action": "Hành động",
+      "Created At": "Ngày tạo"
+    }
+  },
   "updatePostForm": {
     "title": "Cập nhật bài viết"
   },
-  "totalPost": "Tổng: {{count,number}} bài viết",
-  "totalPost_zero": "Không tìm thấy bài viết",
-  "totalPost_plural": "Tổng: {{count,number}} bài viết",
-  "table": {
-    "title": {
-      "postBy": "Tác giả",
-      "action": "Hành động",
-      "createdAt": "Ngày tạo"
-    }
-  }
+  "totalPost_one": "Tổng: {{count,number}} bài viết",
+  "totalPost_zero": "Tổng: {{count,number}} bài viết"
 }
